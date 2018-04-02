@@ -1,0 +1,26 @@
+﻿@model FootballOracle.Models.models.CommentModel
+
+@using (Ajax.BeginForm("AddComment", "Article", new { }, new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "Post",
+    UpdateTargetId = "commentari"
+}, new { }))
+{
+    @Html.HiddenFor(x => x.articleId)
+    @Html.TextBoxFor(x => x.Content, new { id = "4o4o" })
+    <br />
+    <div class="form-group ">
+        <input type="submit" class="btn btn-success" id="click4e" value="Добави Коментар" />
+    </div>
+}
+
+@section script4e{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#click4e").click(function () {
+                $("#4o4o").val(" ");
+            });
+        });
+    </script>
+}

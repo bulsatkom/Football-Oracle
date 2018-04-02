@@ -1,0 +1,15 @@
+﻿@model MenuForChampionshipsViewModel
+
+<div class="btn-group-vertical fixed" role="group" aria-label="ChampionshipsMenu">
+    @foreach (var champ in Model.ChampionShips)
+    {
+        if (champ.Key == Model.Selected)
+        {
+            @Html.ActionLink(champ.Value, "champDetails", "Championship", new { id = champ.Key }, new { type = "button", @class = "btn btn-success active widthable", style = "width : 260px" })
+        }
+        else
+        {
+            @Html.ActionLink(champ.Value, "champDetails", "Championship", new { id = champ.Key }, new { type = "button", @class = "btn btn-success widthable", style = "width : 260px" })
+        }
+    }
+</div>

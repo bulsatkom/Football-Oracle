@@ -1,0 +1,155 @@
+﻿@model ChampDetailsViewModel
+
+@{
+    var teams = Model.Table.ToList();
+}
+<div class="panel panel-success">
+    <div class="panel-heading text-center">@Model.Name</div>
+    <div class="panel-body">
+        <div class="text-center">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Предстоящи Мачове</a></li>
+                <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Изминали Мачове</a></li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane fade in active" id="home">
+                    <table class="table table-hover table-responsive table-striped">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Дата</th>
+                                <th class="text-center">Час</th>
+                                <th class="text-center">Домакин - Гост</th>
+                                <th class="text-center">1</th>
+                                <th class="text-center">Х</th>
+                                <th class="text-center">2</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var match in Model.UpcommingMatches)
+                            {
+                                <tr>
+                                    <td>@match.Date.ToString("dd/MM")</td>
+                                    <td>@match.Date.ToString("HH:mm")</td>
+                                    <td>@Html.ActionLink(match.homeTeam + "-" + match.awayTeam, "Match", "Match", new { id = match.Id }, new { })</td>
+                                    <td>@String.Format("{0:0.00}", match.homeCoeff)</td>
+                                    <td>@String.Format("{0:0.00}", match.drawCoeff)</td>
+                                    <td>@String.Format("{0:0.00}", match.awayCoeff)</td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="profile">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Дата</th>
+                                <th class="text-center">Час</th>
+                                <th class="text-center">Домакин</th>
+                                <th class="text-center">Резултат</th>
+                                <th class="text-center">гост</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var match in Model.PlayedMatches)
+                            {
+                                <tr>
+                                    <td>@match.Date.ToString("dd/MM")</td>
+                                    <td>@match.Date.ToString("HH:mm")</td>
+                                    <td>@match.HomeTeam</td>
+                                    <td>@match.HomeGoals : @match.AwayGoals</td>
+                                    <td>@match.AwayTeam</td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="panel panel-primary">
+            <div class="panel-heading text-center">
+                <h3>Класиране</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Отбор</th>
+                            <th>Мачове</th>
+                            <th>Победи</th>
+                            <th>Равенства</th>
+                            <th>Загуби</th>
+                            <th>Точки</th>
+                            <th>Голова Разлика</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < teams.Count; i++)
+                        {
+                            <tr>
+                                <th>@(i + 1)</th>
+                                <th><img src="@teams[i].Picture" class="img-responsive" style="height : 100px; width: 100px" /> @teams[i].Name</th>
+                                <th>@teams[i].Matches</th>
+                                <th>@teams[i].Wins</th>
+                                <th>@teams[i].Draws</th>
+                                <th>@teams[i].losses</th>
+                                <th>@teams[i].Points</th>
+                                <th>@teams[i].GoalScored : @teams[i].GoalConcedered (@(teams[i].GoalScored - teams[i].GoalConcedered))</th>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br />
+        <div id="championship">
+            @Html.Action("ChampionshipPartial", new { news = Model.News, page = 1 });
+        </div>
+        @*<div class="panel panel-primary">
+                <div class="panel-heading text-center">Новини</div>
+                <div class="panel-body">
+                    <div class="championshipTable">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+                                <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+                                <li><a href="#">2</a></li>
+                                <li><a href="#">3</a></li>
+                                <li><a href="#">4</a></li>
+                                <li><a href="#">5</a></li>
+                                <li>
+                                    <a href="#" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            @*</div>*@
+    </div>
+</div>
+<!-- Nav tabs -->
+@*<ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Мачове Днес</a></li>
+        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Мачове Утре</a></li>
+        <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Далечни Мачове</a></li>
+    </ul>*@
+
+<!-- Tab panes -->
+@*<div class="tab-content">
+        <div role="tabpanel" class="tab-pane fade in active" id="home">4o4o</div>
+        <div role="tabpanel" class="tab-pane fade" id="profile">4o4o 2</div>
+        <div role="tabpanel" class="tab-pane fade" id="messages">4o4o 3</div>
+    </div>*@
+
+@section Scripts {
+    @Scripts.Render("~/bundles/junobtrusive")
+}

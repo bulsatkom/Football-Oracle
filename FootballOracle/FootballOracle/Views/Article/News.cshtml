@@ -1,0 +1,108 @@
+﻿@using FootballOracle.Models.models
+
+@model NewsViewModel
+<div class="row">
+    <br />
+    <div class="col-md-3">
+    @Html.Action("MenuForChampionshipsPartial", "Championship", new { id = Model.ChampionshipId })
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-success">
+            <div class="panel-heading text-center">@Model.Title</div>
+            <div class="panel-body">
+                <small class="text-left text-info">@Model.Date.ToString("dd/MM/yy") | @Model.Date.ToString("HH:mm") часа</small><br />
+                <div class="text-center">
+                    <img class="img-responsive" src="@Model.ImageSrc" width="400" height="450" />
+                </div>
+                <br />
+                <div class="text-left text-info">@Html.Raw(Model.Content)</div>
+                <br />
+                <div class="well">
+                    <h3 class="text-center text-success">Още По темата</h3>
+                    @foreach (var item in Model.MoreForThisArticle)
+                    {
+                        <div>
+                            <span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span>
+                            @Html.ActionLink(item.Title, "News", new { id = item.Id })
+                        </div>
+                    }
+                </div>
+                <div class="text-right"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>@Model.Views Преглеждания</div>
+            </div>
+        </div>
+        <div class="panel panel-success">
+            <div class="panel-heading">Коментари</div>
+            <div class="panel-body">
+                <div>
+                    @if (!User.Identity.IsAuthenticated)
+                    {
+                        <div class="text-danger"> ако искате да добавите коментар трябва първо да се @Html.ActionLink("регистрирате", "Register", "Account", new { }, new { @class = "btn btn-primary" }) или @Html.ActionLink("логнете", "Login", "Account", new { }, new { @class = "btn btn-primary" }) </div>
+                    }
+                    else
+                    {
+                        @Html.Partial("AddCommentPartial", new CommentModel() { articleId = Model.ArticleId });
+                    }
+                </div>
+                <br />
+                <div id="commentari">
+                    @Html.Action("CommentsPartial", "Article", new { id = Model.ArticleId })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-success">
+            <div class="panel-heading text-center">Още Новини</div>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <tbody>
+                        @foreach (var item in Model.OtherNews)
+                        {
+                        <tr>
+                            <td>
+                                <a href='@Url.Action("News", "Article", new { id = item.Id } )'>
+                                    <img style="width: 110px; height: 110px;" src="@item.ImageSrc" />
+                                </a>
+                            </td>
+                            <td>
+                                @Html.ActionLink(item.Title, "News", new { id = item.Id })
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="panel-footer">@Html.ActionLink("Виж Всички", "champDetails", "Championship", new { id = Model.ChampionshipId }, new { }) <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></div>
+        </div>
+        <div class="panel panel-success">
+            <div class="panel-heading text-center">Последни Резултати от Първенството</div>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>дата</th>
+                            <th>Час</th>
+                            <th>Мач</th>
+                            <th>Резултат</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var match in Model.Matches)
+                        {
+                            <tr>
+                                <td>@match.Date.ToString("dd/MM")</td>
+                                <td>@match.Date.ToString("HH:mm")</td>
+                                <td>@Html.ActionLink(match.HomeTeam + " - " + match.AwayTeam, "Match", "Match", new { id = match.Id }, new { })</td>
+                                <td>@match.HomeGoals : @match.AwayGoals</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/junobtrusive")
+}

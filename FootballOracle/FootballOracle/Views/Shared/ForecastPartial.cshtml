@@ -1,0 +1,27 @@
+﻿@model  FootballOracle.Models.models.ForecastModel
+
+<div class="well">
+    <div class="text-primary text-center">@Model.homeTeam - @Model.AwayTeam</div>
+    @using (Html.BeginForm("AddForecasts", "Match", FormMethod.Post, new { @class = "form-horizontal" }))
+    {
+        @Html.AntiForgeryToken()
+   
+        @Html.HiddenFor(x => x.Id);
+        @Html.LabelFor(x => x.Coeff)
+        @Html.DisplayFor(x => x.Coeff);<br />
+        @Html.LabelFor(x => x.Forecast, new { @class = "text-primary" });
+        @Html.DisplayFor(x => x.Forecast);<br />
+        @Html.LabelFor(x => x.points, new { @class = "text-primary" });
+        @Html.TextBoxFor(x => x.points)
+        @Html.ValidationMessageFor(x => x.points, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10 text-right">
+                <input type="submit" class="btn btn-success" value="Заложи" />
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,21 @@
+﻿@model FootballOracle.Areas.Admin.Models.ViewTeam
+
+@using (Html.BeginForm("Result", "Admin", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+
+    @Html.DisplayFor(x => x.homeTeam)
+    @Html.EditorFor(x => x.homeGoals)
+    @Html.ValidationMessageFor(x => x.homeGoals, "", new { @class = "text-danger" })
+    @Html.EditorFor(x => x.awayGoals)
+    @Html.DisplayFor(x => x.awayTeam)
+    @Html.ValidationMessageFor(x => x.awayGoals, "", new { @class = "text-danger" })
+    <br />
+    <br />
+    <input type="submit" value="Submit" />
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

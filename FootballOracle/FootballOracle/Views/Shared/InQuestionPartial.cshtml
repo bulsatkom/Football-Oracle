@@ -1,0 +1,76 @@
+﻿@model InQuestionViewModel
+
+@{
+    var answers = Model.Answers.ToList();
+    var countAnswers = Model.PlayedForEach.ToList();
+}
+
+
+<div class="panel panel-success">
+    <div class="panel-heading">Анкета</div>
+    <div class="panel-body">
+        @if (Model.CanAnswer)
+        {
+            <div class="well">
+                <h3 class="text-center text-danger">@Model.Title?</h3>
+                <br />
+                @using (Html.BeginForm("InQuestionPartial", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(x => x.Id);
+                    @Html.HiddenFor(x => x.Title);
+                    foreach (var answer in answers)
+                    {
+                        @Html.RadioButtonFor(x => x.Answer, answer.Value)
+                        @Html.Label(answer.Text);
+                        <br />
+                        <hr />
+                    }
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" class="btn btn-success" value="Гласувай" />
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="well">
+                <h3 class="text-center text-danger">@Model.Title?</h3>
+                <br />
+                @for (var i = 0; i < answers.Count; i++)
+                {
+                    int playedforthis = countAnswers[i];
+                    double valuenow = ((double)(playedforthis) / (double)(Model.AllPlayedCount));
+                    int result = (int)(valuenow * 100);
+                    @Html.DisplayFor(x => answers[i].Text)
+                    <br />
+                    @*<div class="progress">
+                            <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="@result" aria-valuemin="0" aria-valuemax="100" style="width: @result%">
+                                <span class="sr-only">@result % Complete (success)</span>
+                            </div>
+                        </div>*@
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="@result" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em; width: @result%">
+                            <span class="sr-only">@result % Complete (success)</span>
+                            @result %
+                        </div>
+                    </div>
+                }
+                <div class="text-muted">Общо Гласували: @Model.AllPlayedCount</div>
+                <div class="text-danger">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        @: Благодарим ви, че сте гласували за тази анкета!
+                    }
+                    else
+                    {
+                        @: Ако искате да Гласувате трябва първо да се @Html.ActionLink("регистрирате", "Register", "Account", new { }, new { @class = "btn btn-success" }) или @Html.ActionLink("логнете", "Login", "Account", new { }, new { @class = "btn btn-success" })
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>

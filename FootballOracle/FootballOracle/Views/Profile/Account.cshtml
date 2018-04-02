@@ -1,0 +1,88 @@
+﻿@model AccountViewModel
+
+<div class="panel panel-success">
+    <div class="panel panel-heading">
+        <div>@Model.userName</div>
+    </div>
+    <div class="panel-body">
+        <div class="panel panel-success">
+            <div class="panel-heading">Лична Информация</div>
+            <div class="panel-body">
+                <h3>@Model.FullName</h3>
+                <div><span class="text-muted">Точки :</span> @String.Format("{0:0.00}", Model.Points)</div>
+                <div><span class="text-muted">Град :</span> @Model.City</div>
+                <div><span class="text-muted">Пол :</span> @Model.Gender</div>
+                <div><span class="text-muted">Любим Отбор: </span>@Model.FavouriteTeam <img style="width: 75px; width: 75px;" src="@Model.FavouriteTeamPic" /></div>
+                <div><span class="text-muted">Регистриран на :</span> @Model.RegisteredOn.ToString("ddd d MMM yyyy")</div>
+            </div>
+        </div>
+        <div class="panel panel-success">
+            <div class="panel-heading"> Статистика</div>
+            <div class="panel panel-body">
+                <div>Общо мачове:<div class="text-info">@Model.ForecastCount</div></div>
+                <div>Познати Мачове: <div class="text-success">@Model.SuccessForecastCount</div></div>
+                <div>Не Познати Мачове: <div class="text-danger">@(Model.ForecastCount - Model.SuccessForecastCount)</div></div>
+            </div>
+        </div>
+        <div class="panel panel-success">
+            <div class="panel-heading">Топ Прогнози</div>
+            <div class="panel-body">
+                @if (Model.TopForcasts.Count == 0)
+                {
+                    @: Няма Изминали Прогнози
+                }
+                else
+                {
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Дата</th>
+                                <th>Час</th>
+                                <th>Резултат</th>
+                                <th>Прогноза</th>
+                                <th>Коефициент</th>
+                                <th>Залог</th>
+                                <th>Точки</th>
+                                <th>Статус</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var match in Model.TopForcasts)
+                            {
+                                <tr>
+                                    <td>@match.Date.ToString("dd/MM")</td>
+                                    <td>@match.Date.ToString("HH:mm")</td>
+                                    <td>@match.HomeTeam <img src="@match.HomePic" style="height: 100px; width: 100px;" /> @match.homeGoals : @match.awayGoals <img src="@match.AwayPic" style="height: 100px; width: 100px;" /> @match.AwayTeam</td>
+                                    <td>@match.Forcast</td>
+                                    <td>@match.Coeff</td>
+                                    <td>@match.PlayedPoints</td>
+                                    <td>
+                                        @if (match.IsSuccessFull == true)
+                                        {
+                                            @: + @(match.PlayedPoints * match.Coeff)
+                                        }
+                                        else
+                                        {
+                                            @: - @match.PlayedPoints
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (match.IsSuccessFull == true)
+                                        {
+                                            <span class="glyphicon glyphicon-ok" style="color: green;" aria-hidden="true"></span>
+                                        }
+                                        else
+                                        {
+                                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+            <div class="panel-footer">@Html.ActionLink("Всички Прогнози", "Bets", "Profile", new { id = Model.AccId }, new { @class = "btn btn-success" }) <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></div>
+        </div>
+    </div>
+</div>

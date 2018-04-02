@@ -1,0 +1,21 @@
+﻿@model FootballOracle.Areas.Admin.Models.AddChampionshipViewModel
+
+@using (Html.BeginForm("AddChampionship", "Admin", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary("", new { @class = "text-danger" } )
+
+    @Html.LabelFor(x => x.name, new { @class = "control-label" })
+    @Html.TextBoxFor(x => x.name, new { @class = "form-control" })
+    @Html.ValidationMessageFor(x => x.name, "", new { @class = "text-danger" })
+    <br />
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-default" value="Add Championship" />
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

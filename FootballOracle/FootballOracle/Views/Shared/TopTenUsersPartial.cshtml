@@ -1,0 +1,36 @@
+﻿@model ICollection<TopTenUsersViewModel>
+
+@{
+    var users = Model.ToList();
+}
+
+<div class="panel panel-success">
+    <div class="panel-heading">Топ 10 Потребители</div>
+    <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Потребител</th>
+                        <th>Точки</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < users.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                @(i + 1)
+                            </td>
+                            <td>
+                                @Html.ActionLink(users[i].Name, "Account", "Profile", new { id = users[i].Id }, new { })
+                            </td>
+                            <td>
+                               @String.Format("{0:0.00}", users[i].Points)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+    </div>
+</div>

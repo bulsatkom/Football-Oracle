@@ -1,0 +1,227 @@
+﻿@model MatchesViewModel
+
+@{
+    var matches = Model.MatchesForToday.ToList();
+    var matchesForTomorrow = Model.MatchesForTomorrow.ToList();
+    var otherMatches = Model.OtherMatches.ToList();
+    var forecastsa = Model.Forecasts;
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Мачове Днес</a></li>
+            <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Мачове Утре</a></li>
+            <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Далечни Мачове</a></li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade in active" id="home">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Дата</th>
+                            <th>Домакин</th>
+                            <th>Гост</th>
+                            <th>Единица</th>
+                            <th>X</th>
+                            <th>Двойка</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr></tr>
+                        @foreach (var match in matches)
+                        {
+                            var clas4e = match.IsDisabled ? "success" : "";
+                            <tr class="@clas4e">
+                                <td>@match.Date</td>
+                                <td>@match.HomeTeam</td>
+                                <td>@match.AwayTeam</td>
+                                <td>
+                                    @if (match.IsDisabled)
+                                    {
+                                        @Html.ActionLink(String.Format("{0:0.00}", match.HomeCoeff), "AddForecast", "Match", new { id = match.Id, forecast = "1" }, new { @class = "btn btn-success", disabled = match.IsDisabled })
+                                    }
+                                    else
+                                    {
+                                        @Html.ActionLink(String.Format("{0:0.00}", match.HomeCoeff), "AddForecast", "Match", new { id = match.Id, forecast = "1" }, new { @class = "btn btn-success" })
+                                    }
+                                </td>
+                                <td>
+                                    @if (match.IsDisabled)
+                                    {
+                                        @Html.ActionLink(String.Format("{0:0.00}", match.DrawCoeff), "AddForecast", "Match", new { id = match.Id, forecast = "X" }, new { @class = "btn btn-success", disabled = false })
+                                    }
+                                    else
+                                    {
+                                        @Html.ActionLink(String.Format("{0:0.00}", match.DrawCoeff), "AddForecast", "Match", new { id = match.Id, forecast = "X" }, new { @class = "btn btn-success" })
+                                    }
+                                </td>
+                                <td>
+                                    @if (match.IsDisabled)
+                                    {
+                                        @Html.ActionLink(String.Format("{0:0.00}", match.AwayCoeff), "AddForecast", "Match", new { id = match.Id, forecast = "2" }, new { @class = "btn btn-success", disabled = match.IsDisabled })
+                                    }
+                                    else
+                                    {
+                                        @Html.ActionLink(String.Format("{0:0.00}", match.AwayCoeff), "AddForecast", "Match", new { id = match.Id, forecast = "2" }, new { @class = "btn btn-success" })
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="profile">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Дата</th>
+                            <th>Домакин</th>
+                            <th>Гост</th>
+                            <th>Единица</th>
+                            <th>X</th>
+                            <th>Двойка</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr></tr>
+                        @foreach (var match in matchesForTomorrow)
+                        {
+                            var clas4e = match.IsDisabled ? "success" : "";
+                            <tr class="@clas4e">
+                                <td>@match.Date</td>
+                                <td>@match.HomeTeam</td>
+                                <td>@match.AwayTeam</td>
+                                <td>
+                                    @if (match.IsDisabled)
+                                    {
+                                        @Html.ActionLink(String.Format("{0:0.00}", match.HomeCoeff), "AddForecast", "Match", new { id = match.Id, forecast = "1" }, new { @class = "btn btn-success", disabled = match.IsDisabled })
+                                    }
+                                    else
+                                    {
+                                        @Html.ActionLink(String.Format("{0:0.00}", match.HomeCoeff), "AddForecast", "Match", new { id = match.Id, forecast = "1" }, new { @class = "btn btn-success" })
+                                    }
+                                </td>
+                                <td>
+                                    @if (match.IsDisabled)
+                                    {
+                                        @Html.ActionLink(String.Format("{0:0.00}", match.DrawCoeff), "AddForecast", "Match", new { id = match.Id, forecast = "X" }, new { @class = "btn btn-success", disabled = false })
+                                    }
+                                    else
+                                    {
+                                        @Html.ActionLink(String.Format("{0:0.00}", match.DrawCoeff), "AddForecast", "Match", new { id = match.Id, forecast = "X" }, new { @class = "btn btn-success" })
+                                    }
+                                </td>
+                                <td>
+                                    @if (match.IsDisabled)
+                                    {
+                                        @Html.ActionLink(String.Format("{0:0.00}", match.AwayCoeff), "AddForecast", "Match", new { id = match.Id, forecast = "2" }, new { @class = "btn btn-success", disabled = match.IsDisabled })
+                                    }
+                                    else
+                                    {
+                                        @Html.ActionLink(String.Format("{0:0.00}", match.AwayCoeff), "AddForecast", "Match", new { id = match.Id, forecast = "2" }, new { @class = "btn btn-success" })
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="messages">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Дата</th>
+                            <th>Домакин</th>
+                            <th>Гост</th>
+                            <th>Единица</th>
+                            <th>X</th>
+                            <th>Двойка</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr></tr>
+                        @foreach (var match in otherMatches)
+                        {
+                            var clas4e = match.IsDisabled ? "success" : "";
+                            <tr class="@clas4e">
+                                <td>@match.Date</td>
+                                <td>@match.HomeTeam</td>
+                                <td>@match.AwayTeam</td>
+                                <td>
+                                    @if (match.IsDisabled)
+                                    {
+                                        @Html.ActionLink(String.Format("{0:0.00}", match.HomeCoeff), "AddForecast", "Match", new { id = match.Id, forecast = "1" }, new { @class = "btn btn-success", disabled = match.IsDisabled })
+                                    }
+                                    else
+                                    {
+                                        @Html.ActionLink(String.Format("{0:0.00}", match.HomeCoeff), "AddForecast", "Match", new { id = match.Id, forecast = "1" }, new { @class = "btn btn-success" })
+                                    }
+                                </td>
+                                <td>
+                                    @if (match.IsDisabled)
+                                    {
+                                        @Html.ActionLink(String.Format("{0:0.00}", match.DrawCoeff), "AddForecast", "Match", new { id = match.Id, forecast = "X" }, new { @class = "btn btn-success", disabled = false })
+                                    }
+                                    else
+                                    {
+                                        @Html.ActionLink(String.Format("{0:0.00}", match.DrawCoeff), "AddForecast", "Match", new { id = match.Id, forecast = "X" }, new { @class = "btn btn-success" })
+                                    }
+                                </td>
+                                <td>
+                                    @if (match.IsDisabled)
+                                    {
+                                        @Html.ActionLink(String.Format("{0:0.00}", match.AwayCoeff), "AddForecast", "Match", new { id = match.Id, forecast = "2" }, new { @class = "btn btn-success", disabled = match.IsDisabled })
+                                    }
+                                    else
+                                    {
+                                        @Html.ActionLink(String.Format("{0:0.00}", match.AwayCoeff), "AddForecast", "Match", new { id = match.Id, forecast = "2" }, new { @class = "btn btn-success" })
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div id="forecast">
+            @if (@Model.IsAuthenticated)
+            {
+                if (forecastsa.forcasts.Count == 0)
+                {
+                    <div class="text-danger">Няма Прогнози</div>
+                }
+                else
+                {
+                    <div class="panel panel-primary">
+                        <div class="panel-heading text-muted">Прогнози</div>
+                        @foreach (var forecast in forecastsa.forcasts)
+                        {
+                            @Html.Partial("ForecastPartial", forecast);
+
+                        }
+                    </div>
+                }
+            }
+            else
+            {
+                 <div class="text-warning">
+                    За да правите прогнози трябва първо да се @Html.ActionLink("регистрирате", "Register", "Account", new { }, new { @class = "btn btn-primary" }) или @Html.ActionLink("логнете", "Login", "Account", new { }, new { @class = "btn btn-primary" })
+               </div>
+            }
+        </div>
+    </div>
+    <div class="col-md-8">
+    </div>
+</div>
+
+@section scripts {
+
+    @Scripts.Render("~/bundles/junobtrusive")
+
+}

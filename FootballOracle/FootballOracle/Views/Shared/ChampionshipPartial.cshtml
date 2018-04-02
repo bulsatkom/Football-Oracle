@@ -1,0 +1,117 @@
+﻿@model ChampionshipPartialViewModel
+
+@{
+    int startindex = (Model.page * 10) + 1 - 10;
+    int endindex = startindex + 10 <= Model.news.Count ? startindex + 10 : Model.news.Count + 1;
+    var items = Model.news.ToList();
+
+    if (this.TempData["news"] == null)
+    {
+        this.TempData.Add("news", items);
+    }
+}
+
+<div class="panel panel-primary">
+    <div class="panel-heading text-center">Новини</div>
+    <div class="panel-body">
+        <table class="table table-hover" >
+        <tbody>
+            @for (int i = startindex; i < endindex; i++)
+            {
+
+                <tr>
+                    <td>
+                        <a href='@Url.Action("News", "Article", new { id = items[i - 1].Id })'>
+                            <img src="@items[i -1].ImageSrc"style="width: 100px; height : 100px;" />
+                        </a>
+                    </td>
+                    <td>@Html.ActionLink(items[i - 1].Title, "News", "Article", new { id = items[i - 1].Id }, new { })</td>
+                </tr>
+                
+            }
+        </tbody>
+        </table>
+        <div class="championshipTable">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    @if (Model.page == 1)
+                    {
+                        <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true"></span></a></li>
+                    }
+                    else
+                    {
+                        <li>
+                            <a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+                            @*@Ajax.ActionLink("&laquo;", "ChampionshipPartial", new { news = Model.news, page = Model.page - 1 }, new AjaxOptions { }, new { aria_label = "Previous" });*@
+                        </li>
+                    }
+
+                    @for (int i = 1; i <= Model.pages; i++)
+                    {
+                        if (i != Model.page)
+                        {
+                            <li>
+                                @Ajax.ActionLink(i.ToString(), "ChampionshipPartial", new { news = items, page = i }, new AjaxOptions
+                           {
+                              HttpMethod = "Post",
+                              InsertionMode = InsertionMode.Replace,
+                              UpdateTargetId = "championship"
+                           }, new { })
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="active">
+                                @Ajax.ActionLink(i.ToString(), "ChampionshipPartial", new { news = items, page = i }, new AjaxOptions
+                           {
+                               HttpMethod = "Post",
+                               InsertionMode = InsertionMode.Replace,
+                               UpdateTargetId = "championship"
+                           }, new { })
+                            </li>
+                        }
+                    }
+                    @if (Model.page == Model.pages)
+                    {
+                        <li class="disabled">
+                            <a href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            <a href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+@*<li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+    <li><a href="#">2</a></li>
+    <li><a href="#">3</a></li>
+    <li><a href="#">4</a></li>
+    <li><a href="#">5</a></li>*@
+
+
+@*<table class="table">
+        <tbody>
+            <tr></tr>
+        </tbody>
+    </table>
+    <div class="well">
+        <div class="col-md-6">
+            <a href='@Url.Action("News", "Article", new { id = items[i - 1].Id })'>
+                <img src="@items[i -1].ImageSrc" width="100" height="100" />
+            </a>
+        </div>
+        <div class="col-md-6">
+            @Html.ActionLink(items[i - 1].Title, "News", "Article", new { id = items[i - 1].Id })
+        </div>
+    </div>*@

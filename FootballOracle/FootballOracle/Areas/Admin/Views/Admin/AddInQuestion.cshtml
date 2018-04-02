@@ -1,0 +1,44 @@
+﻿@model FootballOracle.Areas.Admin.Models.AddInquestionViewModel
+
+@if (Model.AnswersCount == 0)
+{
+    using (Html.BeginForm("AddInQuestions", "Admin", FormMethod.Post, new { @class = "form-horizontal" }))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.LabelFor(x => x.Question);
+        @Html.TextBoxFor(x => x.Question);
+        @Html.LabelFor(x => x.AnswersCount);
+        @Html.TextBoxFor(x => x.AnswersCount);
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" class="btn btn-success" value="Добави Отговори" />
+            </div>
+        </div>
+    }
+}
+else
+{
+    using (Html.BeginForm("AddInQuestionsDb", "Admin", FormMethod.Post, new { @class = "form-horizontal" }))
+    {
+        @Html.AntiForgeryToken()
+
+        //var mod = Model.Answers.ToList();
+        @Html.HiddenFor(x => x.AnswersCount)
+        @Html.HiddenFor(x => x.Question);
+        @Html.LabelFor(x => x.Question);
+        @Html.DisplayFor(x => x.Question);
+        @Html.EditorFor(x => x.Answers);
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" class="btn btn-success" value="Добави Анкетата" />
+            </div>
+        </div>
+    }
+
+}
+
+
+
+
+

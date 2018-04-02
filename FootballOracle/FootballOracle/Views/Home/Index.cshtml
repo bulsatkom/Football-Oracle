@@ -1,0 +1,57 @@
+﻿@using Microsoft.AspNet.Identity
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="row">
+    <br />
+    <div class="col-md-3">
+        @Html.Action("MenuForChampionshipsPartial", "Championship");
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-success">
+            <div class="panel-heading text-center">Последни Новини</div>
+            <div class="panel-body">
+                @Html.Action("Carousel", "Article")
+            </div>
+        </div>
+        @Html.Action("LastMatches", "Match")
+        @Html.Action("GetHots", "Match")
+    </div>
+    <div class="col-md-3">
+        @Html.Action("InQuestionPartial")
+        @Html.Action("TopTenUsersPartial", "Profile");
+    </div>
+</div>
+    <!-- Trigger the modal with a button -->
+    <!-- Button trigger modal -->
+    @*<button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#myModal">
+            Launch demo modal
+        </button>*@
+    @*<div data-toggle="modal" data-target="#myModal">Launch demo modal</div>
+
+   
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">@User.Identity.Name</h4>
+                </div>
+                <div class="modal-body">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        @Html.ActionLink("Моите Прогнози", "Bets", "Profile", new { id = Guid.Parse(User.Identity.GetUserId()) }, new { })
+                        <br />
+                        <hr />
+                        @Html.ActionLink("Моят Акаунт", "Account", "Profile", new { id = Guid.Parse(User.Identity.GetUserId()) }, new { })
+
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Затвори</button>
+                </div>
+            </div>
+        </div>
+    </div>*@

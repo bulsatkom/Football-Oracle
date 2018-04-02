@@ -1,0 +1,127 @@
+﻿@using Microsoft.AspNet.Identity
+
+@model BetsViewModel
+
+<div class="panel panel-success">
+    <div class="panel-heading">
+        Прогнози
+    </div>
+    <div class="panel-body">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                Предстоящи Прогнози
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Дата</th>
+                            <th class="text-center">Час</th>
+                            <th class="text-center">Среща</th>
+                            <th>Прогноза</th>
+                            <th class="text-center">Коеф</th>
+                            <th class="text-center">Залог</th>
+                            <th class="text-center">Опции</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.NotPlayedMatches.Count == 0)
+                        {
+                            @: Няма Мачове
+                        }
+                        else
+                        {
+                            foreach (var match in Model.NotPlayedMatches)
+                            {
+                                <tr>
+                                    <td>@match.Date.ToString("dd/MM")</td>
+                                    <td>@match.Date.ToString("HH:mm")</td>
+                                    <td class="text-center"><a href='@Url.Action("Match", "Match", new { id = match.MatchId } )'> @match.HomeTeam <img src="@match.HomePic" style="height: 100px; width: 100px;" /> - <img src="@match.AwayPic" style="height: 100px; width: 100px;" /> @match.AwayTeam </a> </td>
+                                    <td>@match.Forcast</td>
+                                    <td>@String.Format("{0:0.00}", match.Coeff)</td>
+                                    <td>@match.PlayedPoints</td>
+                                    <td>
+                                        @if (User.Identity.GetUserId() == Model.UserId.ToString())
+                                        {
+                                            if (match.IsStarted)
+                                            {
+                                                <span class="glyphicon glyphicon-minus"  aria-hidden="true"></span>
+                                            }
+                                            else
+                                            {
+                                                @Html.ActionLink("Изтрий", "DeleteBet", "Profile", new { id = match.ForecastId }, new { })
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <span class="glyphicon glyphicon-minus"  aria-hidden="true"></span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="panel panel-success">
+            <div class="panel-heading">Изминали Прогнози</div>
+            <div class="panel-body">
+                @if (Model.PlayedMatches.Count == 0)
+                {
+                    @: Няма Изминали Прогнози
+                }
+                else
+                {
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Дата</th>
+                                <th>Час</th>
+                                <th class="text-center">Резултат</th>
+                                <th>Прогноза</th>
+                                <th>Коефициент</th>
+                                <th>Залог</th>
+                                <th>Точки</th>
+                                <th>Статус</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var match in Model.PlayedMatches)
+                            {
+                                <tr>
+                                    <td>@match.Date.ToString("dd/MM")</td>
+                                    <td>@match.Date.ToString("HH:mm")</td>
+                                    <td class="text-center">@match.HomeTeam <img src="@match.HomePic" style="height: 100px; width: 100px;" /> @match.homeGoals : @match.awayGoals <img src="@match.AwayPic" style="height: 100px; width: 100px;" /> @match.AwayTeam</td>
+                                    <td>@match.Forcast</td>
+                                    <td>@match.Coeff</td>
+                                    <td>@match.PlayedPoints</td>
+                                    <td>
+                                        @if (match.IsSuccessFull == true)
+                                        {
+                                            @: + @(match.PlayedPoints * match.Coeff)
+                                        }
+                                        else
+                                        {
+                                            @: - @match.PlayedPoints
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (match.IsSuccessFull == true)
+                                        {
+                                            <span class="glyphicon glyphicon-ok" style="color: green;" aria-hidden="true"></span>
+                                        }
+                                        else
+                                        {
+                                            <span class="glyphicon glyphicon-remove" style="color: red;" aria-hidden="true"></span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+</div>

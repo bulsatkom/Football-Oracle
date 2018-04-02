@@ -1,0 +1,52 @@
+﻿@using Microsoft.AspNet.Identity
+
+@model double?
+
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+            @Html.ActionLink("Hello, " + User.Identity.Name, "Account", "Profile", new { id = User.Identity.GetUserId() }, new { })
+
+                @*<div class="container">
+                    <div data-toggle="modal" data-target="#myModal">Launch demo modal</div>
+                    <div class="modal fade" id="myModal"  role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">@User.Identity.Name</h4>
+                                </div>
+                                <div class="modal-body">
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        @Html.ActionLink("Моите Прогнози", "Bets", "Profile", new { id = Guid.Parse(User.Identity.GetUserId()) }, new { })
+                                        <br />
+                                        <hr />
+                                        @Html.ActionLink("Моят Акаунт", "Account", "Profile", new { id = Guid.Parse(User.Identity.GetUserId()) }, new { })
+                                    }
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Затвори</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>*@
+            </li>
+            <li><a href="@Url.Action("Bets", "Profile", new { id = Guid.Parse(User.Identity.GetUserId()) })"><span class="glyphicon glyphicon-stats" aria-hidden="true"></span> @String.Format("{0:0.00}", Model) точки</a></li>
+            <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+        </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    </ul>
+}

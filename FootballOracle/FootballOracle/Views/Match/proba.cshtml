@@ -1,0 +1,31 @@
+﻿@model FootballOracle.Controllers.ProbvamModel
+
+<input type="text" id="message" value="message" />
+<button id="send-message">Send</button>
+
+@Html.DisplayFor(x => x.proba)
+
+@section scripts{
+@Scripts.Render("~/bundles/signalR")
+<script  src="/signalR/hubs"></script>
+<script>
+    $(function () {
+        $.connection.hub.start();
+
+        var chat = $.connection.probaHub;
+
+        chat.client.addMessage = addMessage;
+  
+            $('#send-message').click(function () {
+
+                var msg = $('#message').val();
+
+                chat.server.sendMessage(msg);
+            });
+    });
+
+    function addMessage(message) {
+        alert(message);
+    }
+</script>
+ }

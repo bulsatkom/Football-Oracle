@@ -1,0 +1,22 @@
+﻿@model CommentsViewModel
+
+@{ 
+    var comments = Model.Comment.ToList();
+}
+
+@if(Model.Comment.Count == 0)
+{
+    <div class="text-danger">Все още няма Коментари по темата, Напиши първият :)</div>
+}
+else
+{
+    for(var i = 0; i < comments.Count; i++)
+    {
+        <div class="well">
+            <small class="text-left text-muted">#@(comments.Count - i)</small>
+            <h3 class="text-info">@Html.ActionLink(comments[i].Author, "Account", "Profile", new { id = comments[i].AuthorId }, new { })</h3>
+            <small class="text-danger">@comments[i].Date</small>
+            <div class="text-muted">@comments[i].Content</div>
+        </div>
+    }
+}

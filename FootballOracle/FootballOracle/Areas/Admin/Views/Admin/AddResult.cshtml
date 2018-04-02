@@ -1,0 +1,17 @@
+﻿@model FootballOracle.Areas.Admin.Models.AddResultViewModel
+@using GridMvc.Html
+
+@Html.Grid(Model.Matches).Columns(Columns =>
+{
+    Columns.Add(c => c.homeTeam).Titled("Home Team");
+    Columns.Add().RenderValueAs(c => Html.EditorForModel(c));
+    //Columns.Add(c => c.homeGoals).Encoded(false).Titled("Home Goals").Sanitized(false).RenderValueAs(x => Html.Editor(x.homeGoals.ToString())).;
+    //Columns.Add(c => c.awayGoals).Encoded(false).Titled("Away Goals").Sanitized(false).RenderValueAs(x => Html.Editor(x.awayGoals.ToString()));
+    Columns.Add(c => c.awayTeam).Titled("Away Team");
+    Columns.Add().Encoded(false).Sanitized(false).RenderValueAs(x => Html.ActionLink("Edit", "Result", new { id = x.Id, homeTeam = x.homeTeam, awayTeam = x.awayTeam }));
+})
+
+@*@foreach (var Match in Model.Matches)
+{
+    @Html.ActionLink(Match.ShowName, "Result", new { id = Match.Id, name = Match.ShowName });
+}*@
