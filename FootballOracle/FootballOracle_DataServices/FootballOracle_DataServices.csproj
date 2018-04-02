@@ -70,14 +70,14 @@
     <Compile Include="UserForecastService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\primerno\FootballOracle\FootballOracle\FootballOracle_Data\FootballOracle_Data.csproj">
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FootballOracle_Data\FootballOracle_Data.csproj">
       <Project>{B755D72C-78B6-4D11-9B3D-9140A26E24C7}</Project>
       <Name>FootballOracle_Data</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

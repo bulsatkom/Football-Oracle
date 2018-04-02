@@ -37,6 +37,11 @@ namespace FootballOracle_DataServices
             return this.dbContext.Team.OrderBy(x => x.Name).ToList();
         }
 
+        public Team GetTeam(Guid id)
+        {
+            return this.dbContext.Team.FirstOrDefault(x => x.Id == id);
+        }
+
         public string GetTeamAvatarById(Guid id)
         {
             return this.dbContext.Team

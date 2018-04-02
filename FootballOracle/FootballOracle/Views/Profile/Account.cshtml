@@ -1,5 +1,15 @@
 ﻿@model AccountViewModel
 
+@{ 
+    double poznatimachovePercent = 0;
+    double nePoznatimachovePercent = 0;
+    if (Model.ForecastCount > 0)
+    {
+        poznatimachovePercent = ((double)Model.SuccessForecastCount / (double)Model.ForecastCount) * 100;
+        nePoznatimachovePercent = ((double)(Model.ForecastCount - Model.SuccessForecastCount) / (double)Model.ForecastCount) * 100;
+    }
+
+}
 <div class="panel panel-success">
     <div class="panel panel-heading">
         <div>@Model.userName</div>
@@ -20,8 +30,8 @@
             <div class="panel-heading"> Статистика</div>
             <div class="panel panel-body">
                 <div>Общо мачове:<div class="text-info">@Model.ForecastCount</div></div>
-                <div>Познати Мачове: <div class="text-success">@Model.SuccessForecastCount</div></div>
-                <div>Не Познати Мачове: <div class="text-danger">@(Model.ForecastCount - Model.SuccessForecastCount)</div></div>
+                <div>Познати Мачове: <div class="text-success">@Model.SuccessForecastCount (@string.Format("{0:0.00}",poznatimachovePercent) %)</div></div>
+                <div>Не Познати Мачове: <div class="text-danger">@(Model.ForecastCount - Model.SuccessForecastCount) (@string.Format("{0:0.00}", nePoznatimachovePercent) %)</div></div>
             </div>
         </div>
         <div class="panel panel-success">

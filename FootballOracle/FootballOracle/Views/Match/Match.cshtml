@@ -1,101 +1,141 @@
 ﻿@model MatchViewModel
-@{
-    double home = 0;
-    double x = 0;
-    double away = 0;
-    if (Model.PlayedFrom == 0)
-    {
-        home = 33;
-        x = 33;
-        away = 33;
-    }
-    else
-    {
-        home = (double)(Model.PlayedFor1) / (double)(Model.PlayedFrom);
-        x = (double)(Model.PlayedForX) / (double)(Model.PlayedFrom);
-        away = (double)(Model.PlayedFor2) / (double)(Model.PlayedFrom);
-    }
 
-    int homePorcent = (int)(home * 100);
-    int drawPorcent = (int)(x * 100);
-    int awayPorcent = (int)(away * 100);
+@{ 
+    var teams = Model.Teams.ToList();
 }
-<div class="jumbotron">
-    <div class="well">
-        <div class="col-md-5">@Model.HomeTeam<img src="@Model.HomeTeamPic" class="img-thumbnail" height="150" width="100" /></div>
-        <div class="col-md-2">-</div>
-        <div class="col-md-5">@Model.AwayTeam<img src="@Model.AwayTeamPic" class="img-thumbnail" height="150" width="100" /></div>
-    </div>
-    <br />
-    <br />
-    <br />
-    <div class="panel panel-success">
-        <div class="panel-heading">Статистика</div>
-        <div class="panel-body">
-            <div class="col-md-4 text-center text-success">1</div>
-            <div class="col-md-4 text-center text-info">X</div>
-            <div class="col-md-4 text-center text-danger">2</div>
-            <br />
-            <div class="progress">
-                <div class="progress-bar progress-bar-success" style="width: @(homePorcent)%">
-                    <span class="sr-only">@homePorcent % Complete (success)</span>
-                    @homePorcent %
-                </div>
-                <div class="progress-bar progress-bar-info progress-bar-striped" style="width: @(drawPorcent)%">
-                    <span class="sr-only">@drawPorcent % Complete (info)</span>
-                    @drawPorcent %
-                </div>
-                <div class="progress-bar progress-bar-danger" style="width: @(awayPorcent)%">
-                    <span class="sr-only">@awayPorcent% Complete (danger)</span>
-                    @awayPorcent %
-                </div>
+<div class="panel panel-success">
+    <div class="panel-heading">@Model.championship</div>
+    <div class="panel-body">
+        <div class="well">
+            <div class="col-md-2">@Model.HomeTeamName</div>
+            <div class="col-md-3"><img src="@Model.HomeTeamPic" class="img-thumbnail" height="150" width="100" /></div>
+            <div class="col-md-2">
+                @if (!Model.isSuccess)
+                {
+                    @: @Model.homeGoals : @Model.awayGoals
+                }
+                else
+                {
+                    @: -
+                }
             </div>
+            <div class="col-md-2">@Model.AwayTeamName</div>
+            <div class="col-md-3"><img src="@Model.AwayTeamPic" class="img-thumbnail" height="150" width="100" /></div>
         </div>
-        <div class="panel-footer">
-            <div class="text-right">
-                Играно от @Model.PlayedFrom
-                @if (Model.PlayedFrom == 1)
+        <br />
+        <br />
+        <br />
+        <div class="panel panel-success">
+            <div class="panel-heading">Статистика</div>
+            <div class="panel-body">
+                <div class="col-md-4 text-center text-success">1</div>
+                <div class="col-md-4 text-center text-info">X</div>
+                <div class="col-md-4 text-center text-danger">2</div>
+                <br />
+                <div class="progress">
+                    <div class="progress-bar progress-bar-success" style="width: @Model.PlayedFor1Percent%">
+                        <span class="sr-only">@Model.PlayedFor1Percent % Complete (success)</span>
+                        @Model.PlayedFor1Percent %
+                    </div>
+                    <div class="progress-bar progress-bar-info progress-bar-striped" style="width: @(Model.PlayedForXPercent)%">
+                        <span class="sr-only">@Model.PlayedForXPercent % Complete (info)</span>
+                        @Model.PlayedForXPercent %
+                    </div>
+                    <div class="progress-bar progress-bar-danger" style="width: @(Model.PlayedFor2Percent)%">
+                        <span class="sr-only">@Model.PlayedFor2Percent% Complete (danger)</span>
+                        @Model.PlayedFor2Percent %
+                    </div>
+                </div>
+                <br />
+            </div>
+            <div class="panel-footer">
+                <div class="text-right">
+                    Играно от @Model.PlayedFrom
+                    @if (Model.PlayedFrom == 1)
             {
-                     @:играч
+                        @:играч
             }
             else
             {
-                    @:играчи
+                        @:играчи
             }
+                </div>
             </div>
         </div>
-    </div>
-    <br />
-    @if (Model.Date > DateTime.Now)
-    {
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Дата</th>
-                    <th>Домакин</th>
-                    <th>Гост</th>
-                    <th>Единица</th>
-                    <th>X</th>
-                    <th>Двойка</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
+        <div class="panel panel-success">
+            <div class="panel-heading">Един Срещу Друг</div>
+            <div class="panel-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Отбор</th>
+                            <th>Мачове</th>
+                            <th>Победи</th>
+                            <th>Равенства</th>
+                            <th>Загуби</th>
+                            <th>Точки</th>
+                            <th>Голова Разлика</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < teams.Count; i++)
+                        {
+                            if(teams[i].Name == Model.HomeTeamName || teams[i].Name == Model.AwayTeamName)
+                            {
+                                <tr>
+                                    <td>@(i + 1)</td>
+                                    <td>@teams[i].Name</td>
+                                    <td>@teams[i].Matches</td>
+                                    <td>@teams[i].Wins</td>
+                                    <td>@teams[i].Draws</td>
+                                    <td>@teams[i].losses</td>
+                                    <td>@teams[i].Points</td>
+                                    <th>@teams[i].GoalScored : @teams[i].GoalConcedered (@(teams[i].GoalScored - teams[i].GoalConcedered))</th>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="panel-footer text-right">@Html.ActionLink("Виж Всички", "champDetails", "Championship", new { id = Model.championshipId }, new { @class = "btn btn-success" })</div>
+        </div>
+        <br />
+        @if (Model.Date > DateTime.Now)
+        {
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Дата</th>
+                        <th>Домакин</th>
+                        <th>Гост</th>
+                        <th>Единица</th>
+                        <th>X</th>
+                        <th>Двойка</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
 
-                    <td>@Model.Date</td>
-                    <td>@Model.HomeTeam</td>
-                    <td>@Model.AwayTeam</td>
-                    <td>
-                        @Html.ActionLink(Model.HomeCoeff.ToString(), "AddForecast", "Match", new { id = Model.id, forecast = "1" }, new { @class = "btn btn-success" })
-                    </td>
-                    <td>
-                        @Html.ActionLink(Model.DrawCoef.ToString(), "AddForecast", "Match", new { id = Model.id, forecast = "X" }, new { @class = "btn btn-success" })
-                    </td>
-                    <td>
-                        @Html.ActionLink(Model.AwayCoeff.ToString(), "AddForecast", "Match", new { id = Model.id, forecast = "2" }, new { @class = "btn btn-success" })
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    }
+                        <td>@Model.Date</td>
+                        <td>@Model.HomeTeamName</td>
+                        <td>@Model.AwayTeamName</td>
+                        <td>
+                            @Html.ActionLink(Model.HomeCoeff.ToString(), "AddForecast", "Match", new { id = Model.id, forecast = "1" }, new { @class = "btn btn-success" })
+                        </td>
+                        <td>
+                            @Html.ActionLink(Model.DrawCoef.ToString(), "AddForecast", "Match", new { id = Model.id, forecast = "X" }, new { @class = "btn btn-success" })
+                        </td>
+                        <td>
+                            @Html.ActionLink(Model.AwayCoeff.ToString(), "AddForecast", "Match", new { id = Model.id, forecast = "2" }, new { @class = "btn btn-success" })
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+        else
+        {
+            
+        }
+    </div>   
 </div>

@@ -360,13 +360,13 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\primerno\FootballOracle\FootballOracle\FootballOracle_Data\FootballOracle_Data.csproj">
-      <Project>{B755D72C-78B6-4D11-9B3D-9140A26E24C7}</Project>
-      <Name>FootballOracle_Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\FootballOracle_DataServices\FootballOracle_DataServices.csproj">
       <Project>{9BF5A55C-41B9-4D69-BE39-76DE8D080187}</Project>
       <Name>FootballOracle_DataServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FootballOracle_Data\FootballOracle_Data.csproj">
+      <Project>{B755D72C-78B6-4D11-9B3D-9140A26E24C7}</Project>
+      <Name>FootballOracle_Data</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

@@ -16,13 +16,15 @@ namespace FootballOracle.Controllers
         private readonly IMatchService matchService;
         private readonly ITeamService teamService;
         private readonly IUserForecastService userForecastService;
+        private readonly IChampionshipService championshipService;
 
         public MatchController(IMatchService matchService, ITeamService teamService,
-            IUserForecastService userForecastService)
+            IUserForecastService userForecastService, IChampionshipService championshipService)
         {
             this.matchService = matchService;
             this.teamService = teamService;
             this.userForecastService = userForecastService;
+            this.championshipService = championshipService;
         }
 
         public ActionResult Index()
@@ -272,19 +274,52 @@ namespace FootballOracle.Controllers
         public ActionResult Match(Guid id)
         {
             var match = this.matchService.GetById(id);
+
+            string championshipName = this.championshipService.GetNameById(match.ChampionshipId);
+
+            var teamsDb = this.championshipService.GetTeamsForChampionship(match.ChampionshipId);
+            var teams = new List<TeamModel>();
+
+            double homePercent = ((double)match.PlayedFor1 / match.PlayedFrom) * 100;
+            double drawPercent = ((double)match.PlayedForX / match.PlayedFrom) * 100;
+            double awayPercent = ((double)match.PlayedFor2 / match.PlayedFrom) * 100;
+
+            if(match.PlayedFrom == 0)
+            {
+                homePercent = 33;
+                drawPercent = 33;
+                awayPercent = 33;
+            }
+
             string homeTeamName = this.teamService.FindTeamNameById(match.HomeTeam);
             string awayTeamName = this.teamService.FindTeamNameById(match.AwayTeam);
 
             string homeTeamPic = this.teamService.GetTeamAvatarById(match.HomeTeam);
             string awayTeamPic = this.teamService.GetTeamAvatarById(match.AwayTeam);
 
+            foreach (var team in teamsDb)
+            {
+                teams.Add(new TeamModel()
+                {
+                    Draws = team.Draws,
+                    GoalConcedered = team.GoalConcedered,
+                    GoalScored = team.GoalScored,
+                    losses = team.Losses,
+                    Matches = team.Matches,
+                    Name = team.Name,
+                    Picture = team.Picture,
+                    Points = team.Points,
+                    Wins = team.Wins
+                });
+            }
+
             var viewModel = new MatchViewModel()
             {
                 id = id,
                 AwayCoeff = match.AwayCoefficient,
-                AwayTeam = awayTeamName,
+                AwayTeamName = awayTeamName,
                 DrawCoef = match.DrawCoefficient,
-                HomeTeam = homeTeamName,
+                HomeTeamName = homeTeamName,
                 HomeCoeff = match.HomeCoefficient,
                 PlayedFor1 = (int)match.PlayedFor1,
                 PlayedForX = (int)match.PlayedForX,
@@ -292,7 +327,16 @@ namespace FootballOracle.Controllers
                 PlayedFrom = match.PlayedFrom,
                 HomeTeamPic = homeTeamPic,
                 AwayTeamPic = awayTeamPic,
-                Date = match.Date
+                Date = match.Date,
+                championshipId = match.ChampionshipId,
+                isSuccess = match.IsOpen,
+                championship = championshipName,
+                PlayedFor1Percent = homePercent,
+                PlayedForXPercent = drawPercent,
+                PlayedFor2Percent = awayPercent,
+                homeGoals = match.HomeGoals,
+                awayGoals = match.AwayGoals,
+                Teams = teams
             };
 
             return this.View(viewModel);

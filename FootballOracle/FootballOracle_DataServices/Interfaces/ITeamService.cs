@@ -18,5 +18,7 @@ namespace FootballOracle_DataServices.Interfaces
         string GetTeamAvatarById(Guid id);
 
         void UpdateTeams(Guid HomeTeam, Guid AwayTeam, int homeGoals, int awayGoals);
+
+        Team GetTeam(Guid id);
     }
 }

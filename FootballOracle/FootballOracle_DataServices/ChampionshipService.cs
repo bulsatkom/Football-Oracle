@@ -59,6 +59,7 @@ namespace FootballOracle_DataServices
             return this.dbContext.Team
                 .Where(x => x.ChampionshipId == id)
                 .OrderByDescending(x => x.Points)
+                .ThenByDescending(x => x.GoalScored - x.GoalConcedered)
                 .ThenByDescending(x => x.GoalScored)
                 .ToList();
         }
