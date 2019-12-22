@@ -1,5 +1,5 @@
 # Football-Oracle
-Football Articles, bets and somethink more 
+Football Articles, bets, and something more 
 
 ### Content
 Admin part
